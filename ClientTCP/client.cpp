@@ -198,7 +198,7 @@ void Client::jsonConnexion()
  * @param message
  * @param personne
  */
-void Client::jsonMessageEnvoie(QString &message, QString &personne)
+void Client::jsonMessageEnvoie(QString &message, QString &personnes)
 {
     //QTcpSocket * sock;
     QJsonObject envoie;
@@ -207,7 +207,11 @@ void Client::jsonMessageEnvoie(QString &message, QString &personne)
 
     QJsonArray To;
     //foreach split
-    To.append(personne);
+    foreach(QString personne, personnes.remove(' ').split(','))
+    {
+        To.append(personne);
+    }
+
     envoie.insert("to",To);
     envoie.insert("content",message);
     this->emssionJson(envoie);
@@ -364,6 +368,7 @@ void Client::on_pb_pdf_clicked()
      //Zone d'enregistrement du document
      QString chemin = QFileDialog::getSaveFileName(this);
      docPrinter.setOutputFileName(chemin);
+
 
      //création des marges
      docPrinter.setPageMargins(QMarginsF(15, 30, 15, 30));
